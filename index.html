@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Secondary School Career Planner</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f8ff;
+            padding: 15px;
+            max-width: 700px;
+            margin: auto;
+        }
+        .box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 8px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .choice-btn {
+            background: #3f51b5;
+        }
+        .restart-btn {
+            background: #f44336;
+        }
+        .skill-bar {
+            height: 15px;
+            background: #ddd;
+            border-radius: 7px;
+            margin-bottom: 5px;
+            overflow: hidden;
+        }
+        .fill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .label {
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2 id="yearTitle">You are now in S1, Term 1</h2>
+    <p id="description">Choose your activity:</p>
+    <div id="choices"></div>
+</div>
+
+<div class="box">
+    <h3>Your Skill Progress</h3>
+    <div class="label">Communication</div>
+    <div class="skill-bar"><div id="communication" class="fill" style="background:#4caf50;"></div></div>
+    <div class="label">Creativity</div>
+    <div class="skill-bar"><div id="creativity" class="fill" style="background:#9c27b0;"></div></div>
+    <div class="label">Academic</div>
+    <div class="skill-bar"><div id="academic" class="fill" style="background:#2196f3;"></div></div>
+    <div class="label">Handicraft</div>
+    <div class="skill-bar"><div id="handicraft" class="fill" style="background:#795548;"></div></div>
+    <div class="label">Mentality</div>
+    <div class="skill-bar"><div id="mentality" class="fill" style="background:#ff9800;"></div></div>
+</div>
+
+<script>
+let year = 1, term = 1;
+let skills = { communication: 50, creativity: 50, academic: 50, handicraft: 50, mentality: 50 };
+
+const activities = {
+    "S1": {
+        "1": [
+            ["Drama Club", { communication: 10, creativity: 5, academic: -5 }],
+            ["Math Club", { academic: 10, mentality: -5 }],
+            ["Gaming", { mentality: -5, academic: -10 }],
+            ["Woodworking", { handicraft: 10, academic: -5 }]
+        ],
+        "2": [
+            ["Art Class", { creativity: 10, academic: -5 }],
+            ["Science Fair", { academic: 10, communication: -5 }],
+            ["Social Media Overuse", { communication: 5, academic: -10 }],
+            ["Football", { mentality: 10, academic: -5 }]
+        ]
+    },
+    "S2": {
+        "1": [
+            ["Debate Club", { communication: 10, mentality: 5, creativity: -5 }],
+            ["Programming", { academic: 10, mentality: -5 }],
+            ["Music Band", { creativity: 10, academic: -5 }],
+            ["Crafting", { handicraft: 10, communication: -5 }]
+        ],
+        "2": [
+            ["Volunteering", { communication: 5, mentality: 5, academic: -5 }],
+            ["Self-study", { academic: 10, communication: -5 }],
+            ["Video Editing", { creativity: 10, mentality: -5 }],
+            ["Part-time Job", { communication: 10, academic: -10 }]
+        ]
+    },
+    "S3": {
+        "1": [
+            ["Public Speaking", { communication: 10, mentality: 5, academic: -5 }],
+            ["Robotics", { academic: 10, handicraft: 5, mentality: -5 }],
+            ["Photography", { creativity: 10, academic: -5 }],
+            ["Carpentry", { handicraft: 10, creativity: -5 }]
+        ],
+        "2": [
+            ["Writing", { creativity: 10, communication: 5, academic: -5 }],
+            ["Study Group", { academic: 10, communication: 5, mentality: -5 }],
+            ["Video Games", { mentality: -5, academic: -10 }],
+            ["Fitness", { mentality: 10, academic: -5 }]
+        ]
+    },
+    "S4": {
+        "1": [
+            ["Journalism", { communication: 10, academic: 5, creativity: -5 }],
+            ["Advanced Math", { academic: 15, mentality: -5 }],
+            ["Graphic Design", { creativity: 10, academic: -5 }],
+            ["DIY Projects", { handicraft: 10, communication: -5 }]
+        ],
+        "2": [
+            ["Community Service", { communication: 5, mentality: 5, academic: -5 }],
+            ["Science Studies", { academic: 10, communication: -5 }],
+            ["Film Club", { creativity: 10, academic: -5 }],
+            ["Relaxation", { mentality: 10, academic: -10 }]
+        ]
+    },
+    "S5": {
+        "1": [
+            ["Leadership", { communication: 10, mentality: 5, academic: -5 }],
+            ["Exam Prep", { academic: 15, mentality: -5 }],
+            ["Art Exhibition", { creativity: 15, academic: -5 }],
+            ["Mindfulness", { mentality: 10, academic: -5 }]
+        ],
+        "2": [
+            ["Volunteer", { communication: 10, mentality: 5, academic: -5 }],
+            ["Peer Tutoring", { academic: 10, communication: 5, mentality: -5 }],
+            ["Social Media", { communication: -5, academic: -10 }],
+            ["Yoga", { mentality: 10, academic: -5 }]
+        ]
+    },
+    "S6": {
+        "1": [
+            ["Uni Prep", { academic: 20, mentality: -5 }],
+            ["Socializing", { communication: 5, academic: -15 }],
+            ["Creative Arts", { creativity: 10, academic: -10 }],
+            ["Vocational", { handicraft: 10, academic: -10 }]
+        ],
+        "2": [
+            ["Intensive Study", { academic: 20, mentality: -10 }],
+            ["Gaming", { mentality: -10, academic: -20 }],
+            ["Exam Revision", { academic: 15, mentality: -5 }],
+            ["Part-time Job", { communication: 10, academic: -15 }]
+        ]
+    }
+};
+
+function updateBars() {
+    for (let s in skills) {
+        skills[s] = Math.min(100, Math.max(0, skills[s]));
+        document.getElementById(s).style.width = skills[s] + "%";
+    }
+}
+
+function nextChoice() {
+    if (term > 2) { year++; term = 1; }
+    if (year > 6) { showAdvice(); return; }
+    document.getElementById("yearTitle").textContent = `You are now in S${year}, Term ${term}`;
+    let acts = activities["S" + year][term];
+    document.getElementById("choices").innerHTML = acts.map(a => `<button class="choice-btn" onclick="choose(${JSON.stringify(a[1])})">${a[0]}</button>`).join('');
+}
+
+function choose(effectsStr) {
+    let effects = JSON.parse(effectsStr); // Convert string to object
+    for (let s in effects) {
+        skills[s] += effects[s];
+    }
+    term++;
+    updateBars();
+    nextChoice();
+}
+
+function showAdvice() {
+    let advice = skills.academic > 70 ? "Pursue Higher Education" : "Consider Practical Careers (Arts, Crafts, Communication fields)";
+    document.getElementById("yearTitle").textContent = "Graduation!";
+    document.getElementById("description").textContent = advice;
+    document.getElementById("choices").innerHTML = '<button class="restart-btn" onclick="location.reload()">Restart</button>';
+}
+
+updateBars();
+nextChoice();
+</script>
+
+</body>
+</html>
